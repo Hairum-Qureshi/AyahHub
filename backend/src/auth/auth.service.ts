@@ -12,19 +12,17 @@ import bcrypt from 'node_modules/bcryptjs';
 import { JwtService } from '@nestjs/jwt/dist/jwt.service';
 import { SignInDto } from 'src/DTOs/authentication/SignIn.dto';
 import * as admin from 'firebase-admin';
+import { UserPayload } from 'src/types';
 
 @Injectable()
 export class AuthService {
-  googleSignUp(token: string): Promise<{ jwtToken: string }> {
-    throw new Error('Method not implemented.');
-  }
   constructor(
     @InjectModel(User.name) private userModel: Model<UserDocument>,
     private jwtService: JwtService,
     @Inject('FIREBASE_ADMIN') private firebase: admin.app.App,
   ) {}
 
-  async signUp(signUpDto: SignUpDto): Promise<{ token: string }> {
+  async signUp(signUpDto: SignUpDto): Promise<{ jwtToken: string }> {
     const { firstName, lastName, email, password, confirmPassword } = signUpDto;
 
     if (password !== confirmPassword) {
@@ -48,11 +46,11 @@ export class AuthService {
 
     await newUser.save();
 
-    const token = this.jwtService.sign({
+    const jwtToken = this.jwtService.sign({
       id: newUser._id,
     });
 
-    return { token };
+    return { jwtToken };
   }
 
   async signIn(signInDto: SignInDto) {
@@ -104,7 +102,7 @@ export class AuthService {
     return { jwtToken };
   }
 
-  getCurrentUser(user: any): any {
+  getCurrentUser(user: UserPayload): UserPayload {
     return user;
   }
 }
