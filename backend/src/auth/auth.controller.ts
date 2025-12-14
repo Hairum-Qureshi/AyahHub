@@ -1,7 +1,9 @@
 import {
   Body,
   Controller,
+  Get,
   Post,
+  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -9,8 +11,10 @@ import { AuthService } from './auth.service';
 import { SignUpDto } from 'src/DTOs/authentication/SignUp.dto';
 import { SignInDto } from 'src/DTOs/authentication/SignIn.dto';
 import { BearerToken } from 'src/decorators/bearerToken.decorator';
+import { AuthGuard } from '@nestjs/passport/dist/auth.guard';
+import { CurrentUser } from 'src/decorators/currentUser.decorator';
 
-@Controller('auth')
+@Controller('api/auth')
 export class AuthController {
   constructor(private readonly userService: AuthService) {}
 
@@ -30,5 +34,11 @@ export class AuthController {
   @UsePipes(new ValidationPipe())
   googleAuth(@BearerToken() token: string): Promise<{ jwtToken: string }> {
     return this.userService.googleAuth(token);
+  }
+
+  @Get('current-user')
+  @UseGuards(AuthGuard())
+  getCurrentUser(@CurrentUser() user: any): string {
+    return this.userService.getCurrentUser(user);
   }
 }
