@@ -13,6 +13,7 @@ import { SignInDto } from 'src/DTOs/authentication/SignIn.dto';
 import { BearerToken } from 'src/decorators/bearerToken.decorator';
 import { AuthGuard } from '@nestjs/passport/dist/auth.guard';
 import { CurrentUser } from 'src/decorators/currentUser.decorator';
+import * as types from 'src/types';
 
 @Controller('api/auth')
 export class AuthController {
@@ -20,7 +21,7 @@ export class AuthController {
 
   @Post('sign-up')
   @UsePipes(new ValidationPipe())
-  signUp(@Body() signUpDto: SignUpDto): Promise<{ token: string }> {
+  signUp(@Body() signUpDto: SignUpDto): Promise<{ jwtToken: string }> {
     return this.userService.signUp(signUpDto);
   }
 
@@ -38,7 +39,7 @@ export class AuthController {
 
   @Get('current-user')
   @UseGuards(AuthGuard())
-  getCurrentUser(@CurrentUser() user: any): string {
+  getCurrentUser(@CurrentUser() user: types.UserPayload): types.UserPayload {
     return this.userService.getCurrentUser(user);
   }
 }
