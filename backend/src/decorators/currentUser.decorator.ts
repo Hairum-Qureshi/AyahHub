@@ -6,11 +6,11 @@ export const CurrentUser = createParamDecorator((ctx: ExecutionContext) => {
   const user = request.user;
   if (!user) return null;
 
-  const obj = {
+  const userPayload = {
     id: user._id,
     firstName: user.firstName,
     lastName: user.lastName,
     email: user.email,
   };
-  return obj;
+  return userPayload;
 });
