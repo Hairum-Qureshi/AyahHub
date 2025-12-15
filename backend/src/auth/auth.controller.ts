@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Post,
+  Res,
   UseGuards,
   UsePipes,
   ValidationPipe,
@@ -14,6 +15,7 @@ import { BearerToken } from 'src/decorators/bearerToken.decorator';
 import { AuthGuard } from '@nestjs/passport/dist/auth.guard';
 import { CurrentUser } from 'src/decorators/currentUser.decorator';
 import * as types from 'src/types';
+import express from 'express';
 
 @Controller('api/auth')
 export class AuthController {
@@ -21,20 +23,36 @@ export class AuthController {
 
   @Post('sign-up')
   @UsePipes(new ValidationPipe())
-  signUp(@Body() signUpDto: SignUpDto): Promise<{ jwtToken: string }> {
-    return this.userService.signUp(signUpDto);
+  signUp(
+    @Body() signUpDto: SignUpDto,
+    @Res({ passthrough: true }) res: express.Response,
+  ): Promise<{ message: string }> {
+    return this.userService.signUp(signUpDto, res);
   }
 
   @Post('sign-in')
   @UsePipes(new ValidationPipe())
-  signIn(@Body() signInDto: SignInDto): Promise<{ token: string }> {
-    return this.userService.signIn(signInDto);
+  signIn(
+    @Body() signInDto: SignInDto,
+    @Res({ passthrough: true }) res: express.Response,
+  ): Promise<{ message: string }> {
+    return this.userService.signIn(signInDto, res);
   }
 
   @Post('google-auth')
   @UsePipes(new ValidationPipe())
-  googleAuth(@BearerToken() token: string): Promise<{ jwtToken: string }> {
-    return this.userService.googleAuth(token);
+  googleAuth(
+    @BearerToken() token: string,
+    @Res({ passthrough: true }) res: express.Response,
+  ): Promise<{ message: string }> {
+    return this.userService.googleAuth(token, res);
+  }
+
+  @Post('sign-out')
+  signOut(@Res({ passthrough: true }) res: express.Response): {
+    message: string;
+  } {
+    return this.userService.signOut(res);
   }
 
   @Get('current-user')

@@ -13,6 +13,7 @@ import { JwtService } from '@nestjs/jwt/dist/jwt.service';
 import { SignInDto } from 'src/DTOs/authentication/SignIn.dto';
 import * as admin from 'firebase-admin';
 import { UserPayload } from 'src/types';
+import { Response } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -22,7 +23,18 @@ export class AuthService {
     @Inject('FIREBASE_ADMIN') private firebase: admin.app.App,
   ) {}
 
-  async signUp(signUpDto: SignUpDto): Promise<{ jwtToken: string }> {
+  private createCookieWithJwtToken(jwtToken: string, res: Response) {
+    res.cookie('auth-session', jwtToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+    });
+  }
+
+  async signUp(
+    signUpDto: SignUpDto,
+    res: Response,
+  ): Promise<{ message: string }> {
     const { firstName, lastName, email, password, confirmPassword } = signUpDto;
 
     if (password !== confirmPassword) {
@@ -50,10 +62,15 @@ export class AuthService {
       id: newUser._id,
     });
 
-    return { jwtToken };
+    this.createCookieWithJwtToken(jwtToken, res);
+
+    return { message: 'success' };
   }
 
-  async signIn(signInDto: SignInDto) {
+  async signIn(
+    signInDto: SignInDto,
+    res: Response,
+  ): Promise<{ message: string }> {
     const { email, password } = signInDto;
 
     const user = await this.userModel.findOne({ email });
@@ -68,14 +85,16 @@ export class AuthService {
       throw new BadRequestException('Invalid email or password');
     }
 
-    const token = this.jwtService.sign({
+    const jwtToken = this.jwtService.sign({
       id: user._id,
     });
 
-    return { token };
+    this.createCookieWithJwtToken(jwtToken, res);
+
+    return { message: 'success' };
   }
 
-  async googleAuth(token: string): Promise<{ jwtToken: string }> {
+  async googleAuth(token: string, res: Response): Promise<{ message: string }> {
     const payload = await this.firebase.auth().verifyIdToken(token);
     const payloadUID: string = payload.uid;
     const userRecord = await this.firebase.auth().getUser(payloadUID);
@@ -99,7 +118,18 @@ export class AuthService {
       id: user._id,
     });
 
-    return { jwtToken };
+    this.createCookieWithJwtToken(jwtToken, res);
+
+    return { message: 'success' };
+  }
+
+  signOut(res: Response): { message: string } {
+    res.clearCookie('auth-session', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+    });
+    return { message: 'success' };
   }
 
   getCurrentUser(user: UserPayload): UserPayload {
