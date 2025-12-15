@@ -3,6 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { FirebaseModule } from './firebase/firebase.module';
+import { QuranModule } from './quran/quran.module';
 
 @Module({
   imports: [
@@ -10,6 +11,7 @@ import { FirebaseModule } from './firebase/firebase.module';
     MongooseModule.forRoot(process.env.MONGO_URI!),
     AuthModule,
     FirebaseModule,
+    QuranModule,
   ],
   controllers: [],
   providers: [],
