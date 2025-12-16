@@ -1,6 +1,6 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { QuranService } from './quran.service';
-import chapters from '../datasets/chapters.json';
+import chapters from './datasets/chapters.json';
 
 @Controller('api/quran')
 export class QuranController {
@@ -9,5 +9,13 @@ export class QuranController {
   @Get('all-chapters')
   getChapters() {
     return chapters;
+  }
+
+  @Get('chapter/:chapterNumber')
+  getChapterDetails(
+    @Param('chapterNumber') chapterNumber: number,
+    @Query('lang') lang: 'en' | 'ur' = 'en',
+  ) {
+    return this.quranService.getChapter(chapterNumber, lang);
   }
 }
