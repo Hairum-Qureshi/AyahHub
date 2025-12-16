@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Landing from "./pages/Landing";
 import NotFound from "./pages/NotFound";
 import Navbar from "../Navbar";
+import QuranChapter from "./pages/QuranChapter";
 
 export default function App() {
 	return (
@@ -10,6 +11,10 @@ export default function App() {
 			<Navbar />
 			<Routes>
 				<Route path="/" element={<Landing />} />
+				<Route
+					path="/quran/chapter/:chapterNumber"
+					element={<QuranChapter />}
+				/>
 				<Route path="*" element={<NotFound />} />
 			</Routes>
 		</BrowserRouter>
