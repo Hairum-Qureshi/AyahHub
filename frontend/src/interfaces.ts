@@ -8,7 +8,7 @@ interface Chapter {
 }
 
 interface UseQuranHookData {
-	chapterData: Chapter[];
+	allQuranicChaptersData: Chapter[];
 }
 
 export type { UseQuranHookData, Chapter };
