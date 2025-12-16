@@ -7,8 +7,26 @@ interface Chapter {
 	totalAyah: number;
 }
 
-interface UseQuranHookData {
-	allQuranicChaptersData: Chapter[];
+interface Verse {
+	id: number;
+	text: string;
+	translation: string;
+	transliteration: string;
 }
 
-export type { UseQuranHookData, Chapter };
+interface DetailedChapter {
+	id: number;
+	name: string;
+	transliteration: string;
+	translation: string;
+	type: "meccan" | "medinan";
+	total_verses: number;
+	verses: Array<Verse>;
+}
+
+interface UseQuranHookData {
+	allQuranicChaptersData: Chapter[];
+	chapterData: DetailedChapter | undefined;
+}
+
+export type { UseQuranHookData, Chapter, DetailedChapter };
