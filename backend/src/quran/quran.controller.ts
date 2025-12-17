@@ -18,4 +18,13 @@ export class QuranController {
   ) {
     return this.quranService.getChapter(chapterNumber, lang);
   }
+
+  @Get(':chapterNumber/:verseNumber')
+  getVerseDetails(
+    @Param('chapterNumber') chapterNumber: number,
+    @Param('verseNumber') verseNumber: number,
+    @Query('lang') lang: 'en' | 'ur' = 'en',
+  ) {
+    return this.quranService.getVerse(chapterNumber, verseNumber, lang);
+  }
 }
