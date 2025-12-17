@@ -29,4 +29,11 @@ interface UseQuranHookData {
 	chapterData: DetailedChapter | undefined;
 }
 
-export type { UseQuranHookData, Chapter, DetailedChapter };
+interface VerseBlockProps {
+	verse: string;
+	verseNumber: number;
+	transliteration: string;
+	translation: string;
+}
+
+export type { UseQuranHookData, Chapter, DetailedChapter, VerseBlockProps };
