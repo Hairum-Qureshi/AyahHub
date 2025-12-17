@@ -18,7 +18,7 @@ export default function ChapterDiv({
 				</div>
 				<div className="mx-5 flex flex-col">
 					<h2 className="text-xl font-bold">{chapter.surahName}</h2>
-					<h3 className="text-md italic">{chapter.surahNameArabic}</h3>
+					<h3 className="text-md font-secondary">{chapter.surahNameArabic}</h3>
 					<p className="text-sm">
 						{chapter.surahNameTranslation} - {chapter.totalAyah} Verses
 					</p>
