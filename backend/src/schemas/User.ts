@@ -1,4 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { QuranNote } from './QuranNote';
+import { SchemaTypes } from 'mongoose';
 
 @Schema()
 export class User {
@@ -19,6 +21,15 @@ export class User {
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStltpfa69E9JTQOf5ZcyLGR8meBbxMFJxM0w&s',
   })
   profilePicture: string;
+
+  @Prop({
+    type: [{ type: SchemaTypes.ObjectId, ref: 'QuranNote' }],
+    default: [],
+  })
+  notes: QuranNote[];
+
+  @Prop()
+  createdTags: string[];
 
   @Prop({ default: Date.now })
   createdAt: Date;
