@@ -12,7 +12,7 @@ export default function ChapterDiv({
 }: ChapterDivProps) {
 	return (
 		<Link to={`/quran/chapter/${chapterNumber}`}>
-			<div className="bg-slate-800 rounded-md border border-sky-400 flex items-center lg:my-0 shadow-[0_0_8px_rgba(56,189,248,0.7)]">
+			<div className="bg-slate-800 rounded-md border border-sky-400 flex items-center lg:my-0 my-5 shadow-[0_0_8px_rgba(56,189,248,0.7)]">
 				<div className="w-13 h-13 border-2 border-sky-400 rounded-md rotate-120 flex items-center justify-center bg-sky-800 m-5">
 					<h1 className="-rotate-120 text-2xl">{chapterNumber}</h1>
 				</div>
