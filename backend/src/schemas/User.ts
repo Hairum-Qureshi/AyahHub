@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { QuranNote } from './QuranNote';
-import { SchemaTypes } from 'mongoose';
+import { HydratedDocument, SchemaTypes } from 'mongoose';
 
 @Schema()
 export class User {
@@ -37,4 +37,4 @@ export class User {
 
 SchemaFactory.createForClass(User);
 export const UserSchema = SchemaFactory.createForClass(User);
-export type UserDocument = User & Document;
+export type UserDocument = HydratedDocument<User>;
