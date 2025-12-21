@@ -1,4 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { HydratedDocument } from 'mongoose';
 
 @Schema()
 export class QuranNote {
@@ -23,4 +24,4 @@ export class QuranNote {
 
 SchemaFactory.createForClass(QuranNote);
 export const QuranNoteSchema = SchemaFactory.createForClass(QuranNote);
-export type QuranNoteDocument = QuranNote & Document;
+export type QuranNoteDocument = HydratedDocument<QuranNote>;
