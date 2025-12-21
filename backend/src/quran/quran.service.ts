@@ -2,10 +2,21 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { readFile } from 'fs/promises';
 import path from 'path';
 import { DetailedChapter, Verse } from 'src/interfaces';
+import sanitizeHtml from 'sanitize-html';
+import { InjectModel } from '@nestjs/mongoose';
+import { QuranNote, QuranNoteDocument } from 'src/schemas/QuranNote';
+import { Model } from 'mongoose';
+import { User, UserDocument } from 'src/schemas/User';
 
 @Injectable()
 export class QuranService {
-  constructor() {}
+  constructor(
+    @InjectModel(QuranNote.name)
+    private QuranNoteModel: Model<QuranNoteDocument>,
+
+    @InjectModel(User.name)
+    private UserModel: Model<UserDocument>,
+  ) {}
 
   private async getJSONData(
     filePath: string,
@@ -64,5 +75,45 @@ export class QuranService {
     }
 
     return verse;
+  }
+
+  async addNote(
+    chapterNumber: number,
+    verseNumber: number,
+    note: string,
+  ): Promise<void> {
+    const uid = '693e0b38c2e46c6966303aae';
+    const sanitizedNoteContent = sanitizeHtml(note, {
+      allowedTags: [
+        'p',
+        'b',
+        'i',
+        'em',
+        'strong',
+        'u',
+        'ul',
+        'ol',
+        'li',
+        'br',
+        'blockquote',
+      ],
+      allowedAttributes: {},
+    });
+
+    const newNote = new this.QuranNoteModel({
+      uid,
+      chapter: chapterNumber,
+      verse: verseNumber,
+      content: sanitizedNoteContent,
+      note: sanitizedNoteContent,
+      tag: '', // TODO : Add tag handling
+    });
+
+    await newNote.save();
+
+    await this.UserModel.findByIdAndUpdate(uid, {
+      $push: { notes: newNote._id },
+      createdTags: [], // TODO : Add tag handling
+    });
   }
 }
