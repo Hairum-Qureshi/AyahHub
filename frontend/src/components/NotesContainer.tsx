@@ -2,6 +2,8 @@ import Toolbar from "./Toolbar";
 import StarterKit from "@tiptap/starter-kit";
 import { useEditor, EditorContent } from "@tiptap/react";
 import Underline from "@tiptap/extension-underline";
+import { Placeholder } from "@tiptap/extensions";
+import "../css/index.css";
 
 interface NotesContainerProps {
 	showNoteEditor: boolean;
@@ -13,7 +15,13 @@ export default function NotesContainer({
 	handleToggleNoteEditor
 }: NotesContainerProps) {
 	const editor = useEditor({
-		extensions: [StarterKit, Underline],
+		extensions: [
+			StarterKit,
+			Underline,
+			Placeholder.configure({
+				placeholder: "Write your note/reflection here...",
+			})
+		],
 		editorProps: {
 			attributes: {
 				class: "focus:outline-none"
