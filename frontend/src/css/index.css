@@ -5,3 +5,11 @@
 	--font-primary: "Amiri", serif;
 	--font-secondary: "Scheherazade New", serif;
 }
+
+.ProseMirror p.is-editor-empty:first-child::before {
+	content: attr(data-placeholder);
+	color: #64748b; /* slate-500 */
+	float: left;
+	height: 0;
+	pointer-events: none;
+}
