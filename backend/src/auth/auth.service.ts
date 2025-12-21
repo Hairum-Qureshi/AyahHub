@@ -18,7 +18,7 @@ import { Response } from 'express';
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectModel(User.name) private userModel: Model<UserDocument>,
+    @InjectModel(User.name) private UserModel: Model<UserDocument>,
     private jwtService: JwtService,
     @Inject('FIREBASE_ADMIN') private firebase: admin.app.App,
   ) {}
@@ -43,13 +43,13 @@ export class AuthService {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = await this.userModel.findOne({ email });
+    const user = await this.UserModel.findOne({ email });
 
     if (user) {
       throw new ConflictException('An account already exists with this email');
     }
 
-    const newUser = new this.userModel({
+    const newUser = new this.UserModel({
       firstName,
       lastName,
       email,
@@ -73,7 +73,7 @@ export class AuthService {
   ): Promise<{ message: string }> {
     const { email, password } = signInDto;
 
-    const user = await this.userModel.findOne({ email });
+    const user = await this.UserModel.findOne({ email });
 
     if (!user) {
       throw new BadRequestException('Invalid email or password');
@@ -99,10 +99,10 @@ export class AuthService {
     const payloadUID: string = payload.uid;
     const userRecord = await this.firebase.auth().getUser(payloadUID);
 
-    let user = await this.userModel.findOne({ email: userRecord.email });
+    let user = await this.UserModel.findOne({ email: userRecord.email });
 
     if (!user) {
-      user = new this.userModel({
+      user = new this.UserModel({
         _id: payloadUID,
         firstName: userRecord.displayName?.split(' ')[0] || 'GoogleUser',
         lastName: userRecord.displayName
