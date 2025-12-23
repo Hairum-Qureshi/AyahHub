@@ -4,6 +4,7 @@
 @theme {
 	--font-primary: "Amiri", serif;
 	--font-secondary: "Scheherazade New", serif;
+	--font-tertiary: "Ubuntu", sans-serif;
 }
 
 .ProseMirror p.is-editor-empty:first-child::before {
