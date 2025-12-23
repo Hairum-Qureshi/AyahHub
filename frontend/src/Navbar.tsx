@@ -14,7 +14,7 @@ export default function Navbar() {
 				</ul>
 				<ul className="flex text-right justify-end items-center">
 					<li className="inline mx-4 hover:cursor-pointer">
-						<Link to="/sign-in">Login</Link>
+						<Link to="/sign-in">Sign In</Link>
 					</li>
 					<li className="inline mx-4 hover:cursor-pointer p-2 bg-sky-900 w-20 text-center rounded-md">
 						<Link to="/sign-up">Sign Up</Link>
