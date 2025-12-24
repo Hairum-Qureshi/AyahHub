@@ -4,22 +4,20 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import Underline from "@tiptap/extension-underline";
 import { Placeholder } from "@tiptap/extensions";
 import "../css/index.css";
-
-interface NotesContainerProps {
-	showNoteEditor: boolean;
-	handleToggleNoteEditor: (show: boolean) => void;
-}
+import type { NotesContainerProps } from "../interfaces";
 
 export default function NotesContainer({
 	showNoteEditor,
-	handleToggleNoteEditor
+	handleToggleNoteEditor,
+	chapterNumber,
+	verseNumber
 }: NotesContainerProps) {
 	const editor = useEditor({
 		extensions: [
 			StarterKit,
 			Underline,
 			Placeholder.configure({
-				placeholder: "Write your note/reflection here...",
+				placeholder: "Write your note/reflection here..."
 			})
 		],
 		editorProps: {
@@ -33,7 +31,7 @@ export default function NotesContainer({
 
 	return showNoteEditor ? (
 		<div className="border-t border-yellow-500 mt-4 bg-[#08151f] rounded-br-md rounded-bl-md">
-			<Toolbar showNoteEditor={handleToggleNoteEditor} editor={editor} />
+			<Toolbar showNoteEditor={handleToggleNoteEditor} editor={editor} chapterNumber={chapterNumber} verseNumber={verseNumber} />
 			<EditorContent
 				editor={editor}
 				className="w-full h-40 text-white p-3 outline-none
