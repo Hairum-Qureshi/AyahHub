@@ -1,3 +1,5 @@
+import type { Editor } from "@tiptap/react";
+
 interface Chapter {
 	surahName: string;
 	surahNameArabic: string;
@@ -36,4 +38,17 @@ interface VerseBlockProps {
 	translation: string;
 }
 
-export type { UseQuranHookData, Chapter, DetailedChapter, VerseBlockProps };
+interface ToolbarProps {
+	showNoteEditor: (show: boolean) => void;
+	editor: Editor;
+	chapterNumber: string;
+	verseNumber: string;
+}
+
+export type {
+	UseQuranHookData,
+	Chapter,
+	DetailedChapter,
+	VerseBlockProps,
+	ToolbarProps
+};
