@@ -4,14 +4,17 @@ import { ImUnderline } from "react-icons/im";
 import { BiSolidQuoteAltRight } from "react-icons/bi";
 import { MdFormatListBulleted } from "react-icons/md";
 import { HiNumberedList } from "react-icons/hi2";
-import { Editor } from "@tiptap/react";
+import useNotes from "../hooks/useNotes";
+import type { ToolbarProps } from "../interfaces";
 
-interface ToolbarProps {
-	showNoteEditor: (show: boolean) => void;
-	editor: Editor;
-}
+export default function Toolbar({
+	showNoteEditor,
+	editor,
+	chapterNumber,
+	verseNumber
+}: ToolbarProps) {
+	const { postNote } = useNotes();
 
-export default function Toolbar({ showNoteEditor, editor }: ToolbarProps) {
 	return (
 		<div className="mr-auto p-2 flex space-x-4 items-center bg-[#012a44] border-b border-yellow-500">
 			<div className="mx-3 flex space-x-4">
@@ -68,7 +71,13 @@ export default function Toolbar({ showNoteEditor, editor }: ToolbarProps) {
 				</button>
 			</div>
 			<div className="ml-auto space-x-4 mx-3">
-				<button className="bg-green-700 text-white px-4 py-1 rounded-sm hover:cursor-pointer">
+				<button
+					className="bg-green-700 text-white px-4 py-1 rounded-sm hover:cursor-pointer"
+					onClick={() => {
+						postNote(chapterNumber, verseNumber, editor.getHTML());
+						showNoteEditor(false);
+					}}
+				>
 					Save
 				</button>
 				<button
