@@ -45,10 +45,18 @@ interface ToolbarProps {
 	verseNumber: string;
 }
 
+interface NotesContainerProps {
+	showNoteEditor: boolean;
+	handleToggleNoteEditor: (show: boolean) => void;
+	chapterNumber: string;
+	verseNumber: string;
+}
+
 export type {
 	UseQuranHookData,
 	Chapter,
 	DetailedChapter,
 	VerseBlockProps,
-	ToolbarProps
+	ToolbarProps,
+	NotesContainerProps
 };
