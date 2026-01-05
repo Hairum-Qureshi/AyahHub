@@ -16,7 +16,7 @@ export class QuranNote {
   content: string;
 
   @Prop({ required: true })
-  tag: string;
+  tags: string[];
 
   @Prop({ default: Date.now })
   createdAt: Date;
