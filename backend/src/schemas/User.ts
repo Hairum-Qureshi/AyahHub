@@ -23,12 +23,12 @@ export class User {
   profilePicture: string;
 
   @Prop({
-    type: [{ type: SchemaTypes.ObjectId, ref: 'QuranNote' }],
+    type: [{ type: [SchemaTypes.ObjectId], ref: 'QuranNote' }],
     default: [],
   })
   notes: QuranNote[];
 
-  @Prop()
+  @Prop({ type: [String], default: [] })
   createdTags: string[];
 
   @Prop({ default: Date.now })
